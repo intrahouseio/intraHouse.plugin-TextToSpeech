@@ -1,4 +1,5 @@
 const Plugin = require('./lib/plugin');
+const player = require('play-sound')({});
 
 const plugin = new Plugin();
 
@@ -17,5 +18,5 @@ plugin.on('toolbar_command', (command) => {
 })
 
 plugin.on('start', () => {
-
+  player.play('/home/sadm/git/test/public/1.wav', (err) => console.log(err));
 });
