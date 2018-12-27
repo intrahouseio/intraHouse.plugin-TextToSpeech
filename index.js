@@ -9,21 +9,26 @@ const Plugin = require('./lib/plugin');
 
 const plugin = new Plugin();
 
+const plugin_path = __dirname;
 
-function yandex_tts(hash, text) {
+
+function yandex_tts(hash, text, callback) {
+  const settings = plugin.getSettings();
   yandex_speech.TTS({
     text,
-    developer_key: '069b6659-984b-4c5f-880e-aaedcfd84102',
-    file: `./cache/${hash}.wav`,
+    developer_key: settings.yandex_token || '069b6659-984b-4c5f-880e-aaedcfd84102',
+    file: `${plugin_path}/cache/${hash}.wav`,
     format: 'wav',
-    emotions: 'neutral',
-  }, () => player.play(`./cache/${hash}.wav`));
+    emotions: settings.yandex_emotion,
+    speaker: settings.yandex_speaker,
+    lang: settings.yandex_lng,
+  }, () => player.play(`${plugin_path}/cache/${hash}.wav`, callback));
 }
 
 function say() {
   const text = 'Привет, мир!';
   const hash = crypto.createHash('md5').update(text).digest("hex");
-  const path = `./cache/${hash}.wav`;
+  const path = `${plugin_path}/cache/${hash}.wav`;
 
   fs.exists(path, exists => {
     if (exists) {
@@ -40,7 +45,8 @@ plugin.on('device_action', (device) => {
 
 plugin.on('toolbar_command', (command) => {
   switch (command.type) {
-    case 'test':
+    case 'TEST_SAY':
+      yandex_tts('test', 'Интра Хаус', command.done);
       break;
     default:
       break;
@@ -48,5 +54,4 @@ plugin.on('toolbar_command', (command) => {
 })
 
 plugin.on('start', () => {
-  say();
 });
