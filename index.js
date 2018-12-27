@@ -25,8 +25,7 @@ function yandex_tts(hash, text, callback) {
   }, () => player.play(`${plugin_path}/cache/${hash}.wav`, callback));
 }
 
-function say() {
-  const text = 'Привет, мир!';
+function say(text) {
   const hash = crypto.createHash('md5').update(text).digest("hex");
   const path = `${plugin_path}/cache/${hash}.wav`;
 
@@ -39,8 +38,8 @@ function say() {
   });
 }
 
-plugin.on('device_action', (device) => {
-    plugin.debug("incomming action: " + device.id + " / " + device.command);
+plugin.on('info', (data) => {
+  say(data.txt)
 })
 
 plugin.on('toolbar_command', (command) => {
