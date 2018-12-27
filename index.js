@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 
-const player = require('play-sound')({});
+const player = require('play-sound')({ });
 const yandex_speech = require('yandex-speech');
 
 const Plugin = require('./lib/plugin');
