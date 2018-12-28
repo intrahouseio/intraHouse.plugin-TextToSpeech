@@ -11,6 +11,44 @@ const plugin = new Plugin();
 
 const plugin_path = __dirname;
 
+function clearCache(callback) {
+  fs.readdir(`${plugin_path}/cache`, (err, files) => {
+    files.forEach(i => {
+      const stats = fs.statSync(`${plugin_path}/cache/${i}`)
+      if (i !== 'test.wav' && stats.isFile()) {
+        fs.unlinkSync(`${plugin_path}/cache/${i}`)
+      }
+    });
+  });
+  callback();
+}
+
+function checkCache(path, size = 5, callback) {
+  fs.readdir(path, (err, files) => {
+    let total = 0;
+    let temp = [];
+    files.forEach(i => {
+      const stats = fs.statSync(`${path}/${i}`)
+      if (i !== 'test.wav' && stats.isFile()) {
+        total = total + stats.size;
+        temp.push({ path: `${path}/${i}`, size: stats.size / 1024 / 1024 });
+      }
+    });
+    const stotal = total / 1024 / 1024;
+    if (stotal > size) {
+      const rlist = [];
+      let x = 0;
+      temp.forEach(i => {
+        if ((stotal - x) > (size / 2)) {
+          x = x + i.size
+          rlist.push(i.path);
+        }
+      });
+       rlist.forEach(i => fs.unlinkSync(i));
+    }
+    callback();
+  })
+}
 
 function yandex_tts(hash, text, callback) {
   const settings = plugin.getSettings();
@@ -31,9 +69,10 @@ function say(text) {
 
   fs.exists(path, exists => {
     if (exists) {
-      player.play(path)
+      player.play(path);
     } else {
-      yandex_tts(hash, text);
+      const settings = plugin.getSettings();
+      checkCache(`${plugin_path}/cache`, settings.cache_size, () => yandex_tts(hash, text));
     }
   });
 }
@@ -45,7 +84,10 @@ plugin.on('info', (data) => {
 plugin.on('toolbar_command', (command) => {
   switch (command.type) {
     case 'TEST_SAY':
-      yandex_tts('test', 'Интра Хаус', command.done);
+      player.play(`${plugin_path}/cache/test.wav`, command.done);
+      break;
+    case 'CLEAR_CAHCE':
+      clearCache(command.done);
       break;
     default:
       break;

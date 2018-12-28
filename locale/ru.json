@@ -1,11 +1,10 @@
 {
-  "Channel": "Канал",
   "Type": "Тип",
-  "Name": "Имя",
-  "Mac": "MAC-адрес",
-  "Ip": "IP-адрес",
-  "Device": "Устройство",
-  "Model": "Модель",
-  "DeviceSearch": "Поиск устройств",
-  "Period": "Время опроса устройств (сек)"
+  "YandexToken": "Токен",
+  "YandexLng": "Язык",
+  "YandexSpeaker": "Голос",
+  "YandexEmotion": "Эмоция",
+  "CacheSize": "Размер кэша (Мбайт)",
+  "TestSay": "Проверка аудио",
+  "ClearCache": "Очистить кэш"
 }

@@ -19,13 +19,13 @@
     },
     {
       "name": "yandex_token",
-      "note": "$Yandex_token",
+      "note": "$YandexToken",
       "type": "STRING",
       "val": ""
     },
     {
       "name": "yandex_lng",
-      "note": "$Yandex_lng",
+      "note": "$YandexLng",
       "type": "autocomplete",
       "visible": "data.type === 'ynadex'",
       "data": [
@@ -49,7 +49,7 @@
     },
     {
       "name": "yandex_speaker",
-      "note": "$Yandex_speaker",
+      "note": "$YandexSpeaker",
       "type": "autocomplete",
       "visible": "data.type === 'ynadex'",
       "data": [
@@ -81,7 +81,7 @@
     },
     {
       "name": "yandex_emotion",
-      "note": "$Yandex_emotion",
+      "note": "$YandexEmotion",
       "type": "autocomplete",
       "visible": "data.type === 'ynadex'",
       "data": [
@@ -98,9 +98,18 @@
           "name": "Evil"
         }
       ]
+    },
+    {
+      "name": "cache_size",
+      "note": "$CacheSize",
+      "type": "NUMBER",
+      "val": 100
     }
   ],
   "chpattern": [],
   "genrules": {},
-  "commands": [{ "id": "TEST_SAY", "name":"$TestSay", "reload":false, "noclose":false, "selected":false }]
+  "commands": [
+    { "id": "TEST_SAY", "name":"$TestSay", "reload":false, "noclose":false, "selected":false },
+    { "id": "CLEAR_CAHCE", "name":"$ClearCache", "reload":false, "noclose":false, "selected":false }
+  ]
 }
